@@ -2,10 +2,12 @@
     <div class="header-container">
         <div class="raw-header">
             <div class="icon-secion">
-                <div class="height-placeholder"></div>
-                <div class="icon-place">
-                    <div>[标志图]</div>
-                </div>
+                <router-link to="/">
+                    <div class="height-placeholder"></div>
+                    <div class="icon-place">
+                        <div>[标志图]</div>
+                    </div>
+                </router-link>
             </div>
             <div class="log-section">
                 <div class="log-in-item">
