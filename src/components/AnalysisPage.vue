@@ -2,6 +2,7 @@
 import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
 import { NDataTable } from "naive-ui";
+import LineChart from "./LineChart.vue";
 
 interface MonthlyCost {
     key: number,
@@ -12,6 +13,7 @@ interface MonthlyCost {
 export default defineComponent({
     components: {
         NDataTable,
+        LineChart,
     },
     setup() {
         const route = useRoute()
@@ -81,6 +83,17 @@ export default defineComponent({
                 />
             </div>
         </div>
+        <div class="monthly-cost-line-chart-container">
+            <div class="monthly-cost-line-chart-wrapper">
+                <line-chart
+                    :xyValuePairs="monthlyCost"
+                    xKeyName="month"
+                    yKeyName="money"
+                    title="Monthly Money Cost"
+                    :chartId="'chart' + String(Math.floor(Math.random() * 1000))"
+                />
+            </div>
+        </div>
     </div>
 </template>
 
@@ -96,5 +109,10 @@ export default defineComponent({
 .monthly-cost-table-wrapper {
     margin: auto;
     width: 20%;
+}
+
+.monthly-cost-line-chart-wrapper {
+    margin: auto;
+    width: 40%;
 }
 </style>
