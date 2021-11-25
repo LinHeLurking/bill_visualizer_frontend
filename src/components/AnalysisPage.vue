@@ -72,47 +72,64 @@ export default defineComponent({
     <div class="analysis-page">
         <h2>账单分析页面内容</h2>
         <h3>账单：{{ billTitle }}</h3>
-        <div class="monthly-cost-table-container">
-            <div class="monthly-cost-table-wrapper">
-                <n-data-table
-                    :columns="columns"
-                    :data="monthlyCost"
-                    :single-line="false"
-                    :max-height="250"
-                    ref="dataTableInstRef"
-                />
+        <div class="monthly-cost-container">
+            <div class="monthly-cost-table-container">
+                <div class="monthly-cost-table-wrapper">
+                    <n-data-table
+                        :columns="columns"
+                        :data="monthlyCost"
+                        :single-line="false"
+                        :max-height="300"
+                        ref="dataTableInstRef"
+                    />
+                </div>
             </div>
-        </div>
-        <div class="monthly-cost-line-chart-container">
-            <div class="monthly-cost-line-chart-wrapper">
-                <line-chart
-                    :xyValuePairs="monthlyCost"
-                    xKeyName="month"
-                    yKeyName="money"
-                    title="Monthly Money Cost"
-                    :chartId="'chart' + String(Math.floor(Math.random() * 1000))"
-                />
+            <div class="monthly-cost-line-chart-container">
+                <div class="monthly-cost-line-chart-wrapper">
+                    <line-chart
+                        :xyValuePairs="monthlyCost"
+                        xKeyName="month"
+                        yKeyName="money"
+                        title="Monthly Money Cost"
+                        :chartId="'chart' + String(Math.floor(Math.random() * 1000))"
+                    />
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style>
+.monthly-cost-container{
+    margin: auto;
+    display: flex;
+    margin-top: 40px;
+}
+
+
 .analysis-page {
     height: 20vh;
 }
 
 .monthly-cost-table-container {
     display: flex;
+    width: 40%;
+}
+
+.monthly-cost-line-chart-container{
+    display: flex;
+    width: 60%;
 }
 
 .monthly-cost-table-wrapper {
     margin: auto;
-    width: 20%;
+    width: 60%;
+    margin-right: 20px;
 }
 
 .monthly-cost-line-chart-wrapper {
     margin: auto;
-    width: 40%;
+    width: 80%;
+    margin-left: 20px;
 }
 </style>

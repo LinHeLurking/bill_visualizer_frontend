@@ -1,33 +1,31 @@
 <template>
     <div class="header-container">
-        <div class="raw-header">
-            <div class="icon-secion">
-                <router-link to="/">
-                    <div class="height-placeholder"></div>
-                    <div class="icon-place">
-                        <div>[标志图]</div>
+        <div class="left-shadow-line"></div>
+        <div>
+            <div class="raw-header">
+                <div class="log-section">
+                    <div class="log-in-item">
+                        <div class="height-placeholder"></div>
+                        <div>Sign In</div>
                     </div>
-                </router-link>
-            </div>
-            <div class="log-section">
-                <div class="log-in-item">
-                    <div class="height-placeholder"></div>
-                    <div>Sign In</div>
-                </div>
-                <div class="log-in-item">
-                    <div class="height-placeholder"></div>
-                    <div>Sign Up</div>
+                    <div class="log-in-item">
+                        <div class="height-placeholder"></div>
+                        <div>Sign Up</div>
+                    </div>
                 </div>
             </div>
+            <div class="horizontal-shadow-line"></div>
         </div>
-        <div class="header-grad-bottom"></div>
+        <div class="right-shadow-line"></div>
     </div>
 </template>
 
 <style>
 .header-container {
-    position: sticky;
+    position: fixed;
+    display: flex;
     top: 0;
+    right: 10vw;
     height: 10vh;
     z-index: 10;
 }
@@ -41,9 +39,19 @@
     height: 90%;
 }
 
-.header-grad-bottom {
-    height: 10%;
+.horizontal-shadow-line {
+    height: 8%;
     background-image: linear-gradient(180deg, rgb(212, 212, 212), white);
+}
+
+.left-shadow-line {
+    width: 8%;
+    background-image: linear-gradient(90deg, rgb(212, 212, 212), white);
+}
+
+.right-shadow-line {
+    width: 8%;
+    background-image: linear-gradient(270deg, rgb(212, 212, 212), white);
 }
 
 .log-section {
