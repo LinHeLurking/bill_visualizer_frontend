@@ -3,14 +3,24 @@
         <div class="left-shadow-line"></div>
         <div>
             <div class="raw-header">
-                <div class="log-section">
-                    <div class="log-in-item">
+                <div class="header-sections">
+                    <div class="header-item">
                         <div class="height-placeholder"></div>
-                        <div>Sign In</div>
+                        <router-link to="/">
+                            <div>Home</div>
+                        </router-link>
                     </div>
-                    <div class="log-in-item">
+                    <div class="header-item">
                         <div class="height-placeholder"></div>
-                        <div>Sign Up</div>
+                        <router-link to="/login">
+                            <div>Sign In</div>
+                        </router-link>
+                    </div>
+                    <div class="header-item">
+                        <div class="height-placeholder"></div>
+                        <router-link to="/signup">
+                            <div>Sign Up</div>
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -54,14 +64,14 @@
     background-image: linear-gradient(270deg, rgb(212, 212, 212), white);
 }
 
-.log-section {
+.header-sections {
     margin-right: 0;
     margin-left: auto;
     justify-content: flex-end;
     display: flex;
 }
 
-.log-in-item {
+.header-item {
     margin-right: 5%;
     width: 80 px;
 }
