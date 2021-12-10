@@ -180,6 +180,7 @@ export default defineComponent({
                         yKeyName="money"
                         title="Monthly Money Cost Trendline"
                         chartId="monthly-cost-line-01"
+                        color="#90dbf4"
                     />
                 </div>
             </div>
@@ -202,7 +203,8 @@ export default defineComponent({
                             xKeyName="category"
                             yKeyName="amount"
                             title="What costs most"
-                            chartId="analysis-amount-01"
+                            chartId="category-amount-01"
+                            color="#90dbf4"
                         />
                     </div>
                 </div>
@@ -221,7 +223,8 @@ export default defineComponent({
                             xKeyName="category"
                             yKeyName="repeat"
                             title="How frequent it costs"
-                            chartId="analysis-repeat-01"
+                            chartId="category-repeat-01"
+                            color="#90dbf4"
                         />
                     </div>
                 </div>
