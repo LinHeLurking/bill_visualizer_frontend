@@ -1,52 +1,69 @@
+<script lang="ts">
+import { defineComponent } from "vue";
+import { Icon } from "@vicons/utils";
+import { Home } from "@vicons/ionicons5";
+import { LogInSharp } from "@vicons/material";
+import { Signature20Regular } from "@vicons/fluent";
+
+export default defineComponent({
+    components: {
+        Icon,
+        Home,
+        LogInSharp,
+        Signature20Regular,
+    }
+})
+</script>
+
+
 <template>
     <div class="header-container">
-        <div class="left-shadow-line"></div>
-        <div>
-            <div class="raw-header">
-                <div class="header-sections">
-                    <div class="header-item">
-                        <div class="height-placeholder"></div>
-                        <router-link to="/">
-                            <div>Home</div>
-                        </router-link>
-                    </div>
-                    <div class="header-item">
-                        <div class="height-placeholder"></div>
-                        <router-link to="/login">
-                            <div>Sign In</div>
-                        </router-link>
-                    </div>
-                    <div class="header-item">
-                        <div class="height-placeholder"></div>
-                        <router-link to="/signup">
-                            <div>Sign Up</div>
-                        </router-link>
-                    </div>
-                </div>
+        <div class="raw-header">
+            <div class="header-item">
+                <!-- <div class="height-placeholder"></div> -->
+                <router-link to="/">
+                    <Icon size="20">
+                        <Home />
+                    </Icon>
+                    <div class="header-text">Home</div>
+                </router-link>
             </div>
-            <div class="horizontal-shadow-line"></div>
+            <div class="header-item">
+                <!-- <div class="height-placeholder"></div> -->
+                <router-link to="/login">
+                    <Icon size="20">
+                        <LogInSharp />
+                    </Icon>
+                    <div class="header-text">Sign In</div>
+                </router-link>
+            </div>
+            <div class="header-item">
+                <!-- <div class="height-placeholder"></div> -->
+                <router-link to="/signup">
+                    <Icon size="20">
+                        <Signature20Regular />
+                    </Icon>
+                    <div class="header-text">Sign Up</div>
+                </router-link>
+            </div>
         </div>
-        <div class="right-shadow-line"></div>
     </div>
 </template>
 
 <style>
 .header-container {
-    position: fixed;
-    display: flex;
-    top: 0;
-    right: 10vw;
-    height: 10vh;
+    position: sticky;
+    margin: auto;
     z-index: 10;
 }
 
 .raw-header {
-    width: 100%;
-    margin-top: 0;
-    top: 0px;
-    background-color: white;
+    width: 12%;
+    height: 6vh;
+    margin: auto;
+    margin-right: 2%;
     display: flex;
-    height: 90%;
+    justify-content: space-evenly;
 }
 
 .horizontal-shadow-line {
@@ -64,20 +81,13 @@
     background-image: linear-gradient(270deg, rgb(212, 212, 212), white);
 }
 
-.header-sections {
-    margin-right: 0;
-    margin-left: auto;
-    justify-content: flex-end;
-    display: flex;
-}
-
 .header-item {
-    margin-right: 5%;
-    width: 80 px;
+    margin: auto;
+    margin-bottom: 0;
 }
 
 .height-placeholder {
-    height: 30%;
+    height: 20%;
 }
 
 .icon-secion {
@@ -87,5 +97,9 @@
 
 .icon-place {
     margin-left: 5%;
+}
+
+.header-text {
+    font-size: 14px;
 }
 </style>
