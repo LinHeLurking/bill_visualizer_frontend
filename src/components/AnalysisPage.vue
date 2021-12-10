@@ -1,7 +1,7 @@
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { computed, defineComponent, ref, Ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { NDataTable } from "naive-ui";
+import { NDataTable, NSelect, SelectOption } from "naive-ui";
 import LineChart from "./LineChart.vue";
 import BarChart from "./BarChart.vue";
 
@@ -20,19 +20,94 @@ interface CostCategory {
 export default defineComponent({
     components: {
         NDataTable,
+        NSelect,
         LineChart,
-        BarChart
+        BarChart,
     },
-    setup() {
+    data() {
         const route = useRoute()
         var queryId = "";
-        var billTitle = "展示默认效果";
+        var showDefault = true;
+        var queryName = "???"
+
+
+
         if (route.params.queryId) {
             queryId = route.params.queryId as string;
+            showDefault = false;
         }
-        const getMonthlyCost = (): MonthlyCost[] => {
+
+        const dataTableInstRef = ref(null);
+
+        const columns = [
+            {
+                title: "Month",
+                key: "month",
+                sorter: {
+                    compare: (a: MonthlyCost, b: MonthlyCost) => a.month - b.month,
+                    multiple: 2,
+                }
+            },
+            {
+                title: "Money",
+                key: "money",
+                sorter: {
+                    compare: (a: MonthlyCost, b: MonthlyCost) => a.money - b.money,
+                    multiple: 1,
+                }
+            },
+        ];
+
+        const monthNames = ((): number[] => {
+            var names: number[] = new Array();
+            if (!showDefault) {
+                // TODO: add API call here
+            } else {
+                for (let m = 1; m <= 12; ++m) {
+                    names.push(m);
+                }
+            }
+            return names;
+        })();
+
+        const costAmountSelectedMonth = ref(monthNames[0]);
+        const costRepeatSelectedMonth = ref(monthNames[0]);
+
+        const monthSelectorOptions = ((): SelectOption[] => {
+            const options = new Array<SelectOption>();
+            const names = monthNames;
+            for (let i = 0; i < names.length; ++i) {
+                const mo = names[i];
+                options.push({
+                    label: String(mo),
+                    value: mo,
+                });
+            }
+            return options;
+        })();
+
+        return {
+            queryId: queryId,
+            showDefault: showDefault,
+            queryName: queryName,
+            costTableColumns: columns,
+            dataTableInstRef: dataTableInstRef,
+            costAmountSelectedMonth: costAmountSelectedMonth,
+            costRepeatSelectedMonth: costRepeatSelectedMonth,
+            monthSelectorOptions: monthSelectorOptions,
+        };
+    },
+    computed: {
+        billTitle(): string {
+            if (this.showDefault) {
+                return "展示默认效果";
+            } else {
+                return this.queryName.valueOf() + "的账单分析";
+            }
+        },
+        monthlyCost(): MonthlyCost[] {
             var cost: MonthlyCost[] = new Array();
-            if (queryId != "") {
+            if (!this.showDefault) {
                 // TODO: add API call here
             } else {
                 var keyId = 0;
@@ -45,65 +120,38 @@ export default defineComponent({
                 }
             }
             return cost;
-        }
-        const dataTableInstRef = ref(null);
-        const costAmountSelectedMonth = ref(0);
-        const costRepeatSelectedMonth = ref(0);
-
-        const getCostCategories = (selectedMonth: number, comparatorCare: string): CostCategory[] => {
-            var cost: CostCategory[] = new Array();
-            if (queryId != "") {
+        },
+        costAmountCategories(): CostCategory[] {
+            const cost = new Array<CostCategory>();
+            if (!this.showDefault) {
                 // TODO: add API call here
             } else {
-                for (let t = 0; t < 8; ++t) {
+                for (let t = 1; t < 8; ++t) {
                     cost.push({
-                        category: "category " + t,
-                        amount: Math.round(Math.random() * 1000),
+                        category: "category " + String(t),
+                        amount: Math.round(Math.random() * 1000) + this.costAmountSelectedMonth,
                         repeat: Math.round(Math.random() * 6),
                     });
                 }
-                if (comparatorCare == "amount") {
-                    cost.sort((a, b) => b.amount - a.amount);
-                } else if (comparatorCare == "repeat") {
-                    cost.sort((a, b) => b.repeat - a.repeat);
+            }
+            return cost;
+        },
+        costRepeatCategories(): CostCategory[] {
+            const cost = new Array<CostCategory>();
+            if (!this.showDefault) {
+                // TODO: add API call here
+            } else {
+                for (let t = 1; t < 8; ++t) {
+                    cost.push({
+                        category: "category " + String(t),
+                        amount: Math.round(Math.random() * 1000),
+                        repeat: Math.round(Math.random() * 6) + this.costRepeatSelectedMonth / 3,
+                    });
                 }
             }
             return cost;
-        };
-
-        const getRandomChartId = (): string => {
-            return "chart" + "_" + String((new Date()).getTime()) + "_" + String(Math.floor(Math.random() * 1000));
-        };
-
-        return {
-            queryId: queryId,
-            billTitle: billTitle,
-            dataTableInstRef: dataTableInstRef,
-            columns: [
-                {
-                    title: "Month",
-                    key: "month",
-                    sorter: {
-                        compare: (a: MonthlyCost, b: MonthlyCost) => a.month - b.month,
-                        multiple: 2,
-                    }
-                },
-                {
-                    title: "Money",
-                    key: "money",
-                    sorter: {
-                        compare: (a: MonthlyCost, b: MonthlyCost) => a.money - b.money,
-                        multiple: 1,
-                    }
-                },
-            ],
-            monthlyCost: getMonthlyCost(),
-            costAmountSelectedMonth: costAmountSelectedMonth.value,
-            costRepeatSelectedMonth: costRepeatSelectedMonth.value,
-            getCostCategories: getCostCategories,
-            getRandomChartId: getRandomChartId,
-        };
-    },
+        },
+    }
 })
 </script>
 
@@ -116,7 +164,7 @@ export default defineComponent({
             <div class="monthly-cost-table-container">
                 <div class="monthly-cost-table-wrapper">
                     <n-data-table
-                        :columns="columns"
+                        :columns="costTableColumns"
                         :data="monthlyCost"
                         :single-line="false"
                         :max-height="300"
@@ -136,19 +184,25 @@ export default defineComponent({
                 </div>
             </div>
         </div>
+
         <div class="monthly-cost-container">
             <div class="monthly-cost-amount-chart-container">
                 <div class="monthly-cost-amount-chart-wrapper">
                     <div class="month-selector">
-                        <!-- Select january by default -->
+                        <div class="month-selector">
+                            <n-select
+                                v-model:value="costAmountSelectedMonth"
+                                :options="monthSelectorOptions"
+                            />
+                        </div>
                     </div>
                     <div class="monthly-cost-amount-chart">
                         <bar-chart
-                            :xy-value-pairs="getCostCategories(costAmountSelectedMonth, 'amount')"
+                            :xy-value-pairs="costAmountCategories"
                             xKeyName="category"
                             yKeyName="amount"
                             title="What costs most"
-                            :chartId="'chart' + '_' + (new Date()).getTime() + '_' + String(Math.floor(Math.random() * 1000))"
+                            chartId="analysis-amount-01"
                         />
                     </div>
                 </div>
@@ -156,15 +210,18 @@ export default defineComponent({
             <div class="monthly-cost-repeat-chart-container">
                 <div class="monthly-cost-repeat-chart-wrapper">
                     <div class="month-selector">
-                        <!-- Select january by default -->
+                        <n-select
+                            v-model:value="costRepeatSelectedMonth"
+                            :options="monthSelectorOptions"
+                        />
                     </div>
                     <div class="monthly-cost-repeat-chart">
                         <bar-chart
-                            :xy-value-pairs="getCostCategories(costRepeatSelectedMonth, 'repeat')"
+                            :xy-value-pairs="costRepeatCategories"
                             xKeyName="category"
                             yKeyName="repeat"
                             title="How frequent it costs"
-                            :chartId="getRandomChartId()"
+                            chartId="analysis-repeat-01"
                         />
                     </div>
                 </div>

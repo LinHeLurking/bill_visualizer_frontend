@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, PropType, toRefs } from "vue";
+import { defineComponent } from "vue";
 import $ from "jquery";
 import Chart from "chart.js/auto";
 

@@ -1,5 +1,13 @@
-<script setup lang="ts">
-import Header from "./components/Header.vue"
+<script lang="ts">
+import { defineAsyncComponent, defineComponent } from "vue";
+
+// import Header from "./components/Header.vue";
+
+export default defineComponent({
+  components: {
+    Header: defineAsyncComponent(() => import("./components/Header.vue")),
+  }
+});
 </script>
 
 <template>
