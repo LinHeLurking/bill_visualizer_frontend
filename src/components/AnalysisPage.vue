@@ -71,6 +71,10 @@ export default defineComponent({
             return cost;
         };
 
+        const getRandomChartId = (): string => {
+            return "chart" + "_" + String((new Date()).getTime()) + "_" + String(Math.floor(Math.random() * 1000));
+        };
+
         return {
             queryId: queryId,
             billTitle: billTitle,
@@ -97,6 +101,7 @@ export default defineComponent({
             costAmountSelectedMonth: costAmountSelectedMonth.value,
             costRepeatSelectedMonth: costRepeatSelectedMonth.value,
             getCostCategories: getCostCategories,
+            getRandomChartId: getRandomChartId,
         };
     },
 })
@@ -126,7 +131,7 @@ export default defineComponent({
                         xKeyName="month"
                         yKeyName="money"
                         title="Monthly Money Cost Trendline"
-                        :chartId="'chart' + '_' + (new Date()).getTime() + '_' + String(Math.floor(Math.random() * 1000))"
+                        :chartId="getRandomChartId()"
                     />
                 </div>
             </div>
@@ -159,7 +164,7 @@ export default defineComponent({
                             xKeyName="category"
                             yKeyName="repeat"
                             title="How frequent it costs"
-                            :chartId="'chart' + '_' + (new Date()).getTime() + '_' + String(Math.floor(Math.random() * 1000))"
+                            :chartId="getRandomChartId()"
                         />
                     </div>
                 </div>
