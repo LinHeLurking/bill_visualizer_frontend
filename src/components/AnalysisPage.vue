@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, ref, Ref, watch } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
 import { NDataTable, NSelect, SelectOption } from "naive-ui";
 import LineChart from "./LineChart.vue";
@@ -134,6 +134,7 @@ export default defineComponent({
                     });
                 }
             }
+            cost.sort((a, b) => b.amount - a.amount);
             return cost;
         },
         costRepeatCategories(): CostCategory[] {
@@ -148,6 +149,7 @@ export default defineComponent({
                         repeat: Math.round(Math.random() * 6) + this.costRepeatSelectedMonth / 3,
                     });
                 }
+                cost.sort((a, b) => b.repeat - a.repeat);
             }
             return cost;
         },
