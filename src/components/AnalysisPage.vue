@@ -179,7 +179,7 @@ export default defineComponent({
                         xKeyName="month"
                         yKeyName="money"
                         title="Monthly Money Cost Trendline"
-                        :chartId="getRandomChartId()"
+                        chartId="monthly-cost-line-01"
                     />
                 </div>
             </div>
