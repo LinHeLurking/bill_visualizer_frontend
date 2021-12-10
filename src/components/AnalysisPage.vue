@@ -125,7 +125,7 @@ export default defineComponent({
                         :xyValuePairs="monthlyCost"
                         xKeyName="month"
                         yKeyName="money"
-                        title="Monthly Money Cost"
+                        title="Monthly Money Cost Trendline"
                         :chartId="'chart' + '_' + (new Date()).getTime() + '_' + String(Math.floor(Math.random() * 1000))"
                     />
                 </div>
@@ -142,7 +142,23 @@ export default defineComponent({
                             :xy-value-pairs="getCostCategories(costAmountSelectedMonth, 'amount')"
                             xKeyName="category"
                             yKeyName="amount"
-                            title="What cost most this month"
+                            title="What costs most"
+                            :chartId="'chart' + '_' + (new Date()).getTime() + '_' + String(Math.floor(Math.random() * 1000))"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="monthly-cost-repeat-chart-container">
+                <div class="monthly-cost-repeat-chart-wrapper">
+                    <div class="month-selector">
+                        <!-- Select january by default -->
+                    </div>
+                    <div class="monthly-cost-repeat-chart">
+                        <bar-chart
+                            :xy-value-pairs="getCostCategories(costRepeatSelectedMonth, 'repeat')"
+                            xKeyName="category"
+                            yKeyName="repeat"
+                            title="How frequent it costs"
                             :chartId="'chart' + '_' + (new Date()).getTime() + '_' + String(Math.floor(Math.random() * 1000))"
                         />
                     </div>
@@ -181,6 +197,18 @@ export default defineComponent({
 .monthly-cost-amount-chart-wrapper {
     margin: auto;
     width: 80%;
+    margin-right: 20px;
+}
+
+.monthly-cost-repeat-chart-container {
+    display: flex;
+    width: 50%;
+}
+
+.monthly-cost-repeat-chart-wrapper {
+    margin: auto;
+    width: 80%;
+    margin-left: 20px;
 }
 
 .monthly-cost-table-wrapper {
