@@ -2,8 +2,8 @@
 import { defineComponent } from "vue";
 import { Icon } from "@vicons/utils";
 import { Home } from "@vicons/ionicons5";
-import { LogInSharp } from "@vicons/material";
-import { Signature20Regular } from "@vicons/fluent";
+import LogInSharp from "@vicons/material/LogInSharp";
+import Signature20Regular from "@vicons/fluent/Signature20Regular";
 
 export default defineComponent({
     components: {
