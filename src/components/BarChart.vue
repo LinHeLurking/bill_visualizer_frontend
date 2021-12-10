@@ -28,12 +28,10 @@ export default defineComponent({
             datasets: [{
                 label: this.yKeyName,
                 data: yValues,
-                backgroundColor: "rgb(255, 99, 132)",
-                borderColor: "rgb(255, 99, 132)",
             }],
         };
         const myChart = new Chart(ctx, {
-            type: "line",
+            type: "bar",
             data: data,
             options: {
                 responsive: true,
@@ -58,7 +56,7 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="line-chart-container">
+    <div class="bar-chart-container">
         <canvas :id="chartId"></canvas>
     </div>
 </template>

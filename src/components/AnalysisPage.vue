@@ -3,6 +3,7 @@ import { defineComponent, ref } from "vue";
 import { useRoute } from "vue-router";
 import { NDataTable } from "naive-ui";
 import LineChart from "./LineChart.vue";
+import BarChart from "./BarChart.vue";
 
 interface MonthlyCost {
     key: number,
@@ -10,10 +11,17 @@ interface MonthlyCost {
     money: number,
 };
 
+interface CostCategory {
+    category: string,
+    amount: number,
+    repeat: number,
+};
+
 export default defineComponent({
     components: {
         NDataTable,
         LineChart,
+        BarChart
     },
     setup() {
         const route = useRoute()
@@ -39,6 +47,30 @@ export default defineComponent({
             return cost;
         }
         const dataTableInstRef = ref(null);
+        const costAmountSelectedMonth = ref(0);
+        const costRepeatSelectedMonth = ref(0);
+
+        const getCostCategories = (selectedMonth: number, comparatorCare: string): CostCategory[] => {
+            var cost: CostCategory[] = new Array();
+            if (queryId != "") {
+                // TODO: add API call here
+            } else {
+                for (let t = 0; t < 8; ++t) {
+                    cost.push({
+                        category: "category " + t,
+                        amount: Math.round(Math.random() * 1000),
+                        repeat: Math.round(Math.random() * 6),
+                    });
+                }
+                if (comparatorCare == "amount") {
+                    cost.sort((a, b) => b.amount - a.amount);
+                } else if (comparatorCare == "repeat") {
+                    cost.sort((a, b) => b.repeat - a.repeat);
+                }
+            }
+            return cost;
+        };
+
         return {
             queryId: queryId,
             billTitle: billTitle,
@@ -62,6 +94,9 @@ export default defineComponent({
                 },
             ],
             monthlyCost: getMonthlyCost(),
+            costAmountSelectedMonth: costAmountSelectedMonth.value,
+            costRepeatSelectedMonth: costRepeatSelectedMonth.value,
+            getCostCategories: getCostCategories,
         };
     },
 })
@@ -91,8 +126,26 @@ export default defineComponent({
                         xKeyName="month"
                         yKeyName="money"
                         title="Monthly Money Cost"
-                        :chartId="'chart' + String(Math.floor(Math.random() * 1000))"
+                        :chartId="'chart' + '_' + (new Date()).getTime() + '_' + String(Math.floor(Math.random() * 1000))"
                     />
+                </div>
+            </div>
+        </div>
+        <div class="monthly-cost-container">
+            <div class="monthly-cost-amount-chart-container">
+                <div class="monthly-cost-amount-chart-wrapper">
+                    <div class="month-selector">
+                        <!-- Select january by default -->
+                    </div>
+                    <div class="monthly-cost-amount-chart">
+                        <bar-chart
+                            :xy-value-pairs="getCostCategories(costAmountSelectedMonth, 'amount')"
+                            xKeyName="category"
+                            yKeyName="amount"
+                            title="What cost most this month"
+                            :chartId="'chart' + '_' + (new Date()).getTime() + '_' + String(Math.floor(Math.random() * 1000))"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -100,12 +153,11 @@ export default defineComponent({
 </template>
 
 <style>
-.monthly-cost-container{
+.monthly-cost-container {
     margin: auto;
     display: flex;
     margin-top: 40px;
 }
-
 
 .analysis-page {
     height: 20vh;
@@ -116,9 +168,19 @@ export default defineComponent({
     width: 40%;
 }
 
-.monthly-cost-line-chart-container{
+.monthly-cost-line-chart-container {
     display: flex;
     width: 60%;
+}
+
+.monthly-cost-amount-chart-container {
+    display: flex;
+    width: 50%;
+}
+
+.monthly-cost-amount-chart-wrapper {
+    margin: auto;
+    width: 80%;
 }
 
 .monthly-cost-table-wrapper {
