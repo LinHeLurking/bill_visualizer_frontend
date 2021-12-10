@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref, Ref } from "vue";
 import $ from "jquery";
 import Chart from "chart.js/auto";
 
@@ -11,49 +11,66 @@ export default defineComponent({
         chartId: String,
         title: String,
     },
-    mounted() {
-        var ctx = $(`#${this.chartId}`).get(0) as HTMLCanvasElement;
-        // console.log($(`#${this.chartId}`));
-        // console.log($(`#${this.chartId}`).get(0));
-        const xValues = new Array();
-        const yValues = new Array();
-        if (this.xyValuePairs && this.xKeyName && this.yKeyName) {
-            for (let i = 0; i < this.xyValuePairs.length; ++i) {
-                xValues.push(this.xyValuePairs[i][this.xKeyName]);
-                yValues.push(this.xyValuePairs[i][this.yKeyName]);
-            }
-        }
-        const data = {
-            labels: xValues,
-            datasets: [{
-                label: this.yKeyName,
-                data: yValues,
-                backgroundColor: "rgb(255, 99, 132)",
-                borderColor: "rgb(255, 99, 132)",
-            }],
+    data() {
+        const currentChart: Ref<Chart<any, any[], any> | null> = ref(null);
+        return {
+            currentChart: currentChart,
         };
-        const myChart = new Chart(ctx, {
-            type: "line",
-            data: data,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false,
-                        position: "right",
-                    },
-                    title: {
-                        display: true,
-                        text: this.title,
-                    },
+    },
+    methods: {
+        draw() {
+            if (this.currentChart) {
+                this.currentChart.destroy();
+            }
+            var ctx = $(`#${this.chartId}`).get(0) as HTMLCanvasElement;
+            const xValues = new Array();
+            const yValues = new Array();
+            if (this.xyValuePairs && this.xKeyName && this.yKeyName) {
+                for (let i = 0; i < this.xyValuePairs.length; ++i) {
+                    xValues.push(this.xyValuePairs[i][this.xKeyName]);
+                    yValues.push(this.xyValuePairs[i][this.yKeyName]);
+                }
+            }
+            const data = {
+                labels: xValues,
+                datasets: [{
+                    label: this.yKeyName,
+                    data: yValues,
+                    backgroundColor: "rgb(255, 99, 132)",
+                    borderColor: "rgb(255, 99, 132)",
+                }],
+            };
+            const myChart = new Chart(ctx, {
+                type: "line",
+                data: data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false,
+                            position: "right",
+                        },
+                        title: {
+                            display: true,
+                            text: this.title,
+                        },
 
+                    },
+                    interaction: {
+                        intersect: false,
+                    },
                 },
-                interaction: {
-                    intersect: false,
-                },
-            },
-        });
-    }
+            });
+        },
+    },
+
+    mounted() {
+        this.draw();
+    },
+
+    updated() {
+        this.draw();
+    },
 })
 </script>
 
