@@ -1,8 +1,9 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, inject, Ref } from "vue";
 import { LogoWechat } from "@vicons/ionicons5";
 import { Alipay } from "@vicons/fa";
-import { NUpload, NUploadDragger, NIcon, NText, NCard, NDivider, NButton } from "naive-ui";
+import { NUpload, NUploadDragger, NIcon, NText, NCard, NDivider, NButton, useMessage } from "naive-ui";
+import router from "../router";
 
 export default defineComponent({
     components: {
@@ -14,11 +15,20 @@ export default defineComponent({
         NText,
         NCard,
         NDivider,
+        NButton,
     },
     setup() {
-        const analyze = function () { };
+        const sharedToken = inject("sharedToken") as Ref<string>;
+        const message = useMessage();
+        const gotoAnalysisPage = function () {
+            const token = sharedToken.value;
+            if (token == "") {
+                message.warning("请注册后使用分析功能");
+            }
+            router.push({ name: "/analysis", params: { queryId: token } });
+        };
         return {
-            analyze: analyze,
+            gotoAnalysisPage,
         };
     },
 });
@@ -43,7 +53,7 @@ export default defineComponent({
         <n-divider />
         <div class="upload-container-outer">
             <div class="upload-container-inner">
-                <n-upload action="">
+                <n-upload action="http://127.0.0.1:8000">
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
                             <n-icon size="48" :depth="3">
@@ -56,7 +66,7 @@ export default defineComponent({
             </div>
         </div>
         <div style="height: 20px;"></div>
-        <n-button @click="analyze">分析账单</n-button>
+        <n-button @click="gotoAnalysisPage">分析账单</n-button>
     </n-card>
 </template>
 

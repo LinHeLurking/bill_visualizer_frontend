@@ -13,7 +13,7 @@ export default defineComponent({
     setup() {
         const userNameRef = ref("");
         const passwordRef = ref("");
-        const sharedToken = inject("sharedToken");
+        const sharedToken = inject("sharedToken") as Ref<string>;
         const message = useMessage();
         const logIn = function () {
             const userName = userNameRef.value;
@@ -27,7 +27,7 @@ export default defineComponent({
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     console.log(xhr.response);
-                    if (xhr.status == 200 && xhr.response.result == "") {
+                    if (xhr.status == 200 && xhr.response.result == true) {
                         message.success("登录成功");
                         sharedToken.value = xhr.response.token;
                     }
