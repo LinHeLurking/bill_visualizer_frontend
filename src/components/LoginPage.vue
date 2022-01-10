@@ -78,5 +78,6 @@ export default defineComponent({
 .n-card {
     max-width: 400px;
     margin: 0 auto;
+    margin-top: 100px;
 }
 </style>

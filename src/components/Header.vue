@@ -18,9 +18,9 @@ export default defineComponent({
 
 <template>
     <div class="header-container">
+        <div style="height:10px;"></div>
         <div class="raw-header">
             <div class="header-item">
-                <!-- <div class="height-placeholder"></div> -->
                 <router-link to="/">
                     <Icon size="20">
                         <Home />
@@ -29,7 +29,6 @@ export default defineComponent({
                 </router-link>
             </div>
             <div class="header-item">
-                <!-- <div class="height-placeholder"></div> -->
                 <router-link to="/login">
                     <Icon size="20">
                         <LogInSharp />
@@ -38,7 +37,6 @@ export default defineComponent({
                 </router-link>
             </div>
             <div class="header-item">
-                <!-- <div class="height-placeholder"></div> -->
                 <router-link to="/signup">
                     <Icon size="20">
                         <Signature20Regular />

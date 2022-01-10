@@ -66,7 +66,7 @@ export default defineComponent({
             </div>
         </div>
         <div style="height: 20px;"></div>
-        <n-button @click="gotoAnalysisPage">分析账单</n-button>
+        <n-button type="primary" @click="gotoAnalysisPage">分析账单</n-button>
     </n-card>
 </template>
 
