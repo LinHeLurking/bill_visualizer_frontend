@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 import { defineComponent } from "vue";
-import { ArchiveOutline as ArchiveIcon, LogoWechat } from "@vicons/ionicons5";
+import { LogoWechat } from "@vicons/ionicons5";
 import { Alipay } from "@vicons/fa";
-import { NUpload, NUploadDragger, NIcon, NText } from "naive-ui";
+import { NUpload, NUploadDragger, NIcon, NText, NCard, NDivider, NButton } from "naive-ui";
 
 export default defineComponent({
     components: {
@@ -12,19 +12,20 @@ export default defineComponent({
         NUploadDragger,
         NIcon,
         NText,
-
-    }
+        NCard,
+        NDivider,
+    },
+    setup() {
+        const analyze = function () { };
+        return {
+            analyze: analyze,
+        };
+    },
 });
 </script>
 
 <template>
-    <div class="main-page">
-        <h2>主页内容</h2>
-    </div>
-    <div>
-        <!-- <router-link to="/analysis">
-            <div>分析账单</div>
-        </router-link>-->
+    <n-card title="账单分析">
         <div class="upload-container-outer">
             <div class="upload-container-inner">
                 <n-upload action="http://127.0.0.1:8000">
@@ -39,9 +40,10 @@ export default defineComponent({
                 </n-upload>
             </div>
         </div>
+        <n-divider />
         <div class="upload-container-outer">
             <div class="upload-container-inner">
-                <n-upload action>
+                <n-upload action="">
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
                             <n-icon size="48" :depth="3">
@@ -53,8 +55,9 @@ export default defineComponent({
                 </n-upload>
             </div>
         </div>
-        <div>登陆后分析账单</div>
-    </div>
+        <div style="height: 20px;"></div>
+        <n-button @click="analyze">分析账单</n-button>
+    </n-card>
 </template>
 
 <style>
@@ -67,7 +70,12 @@ export default defineComponent({
 }
 
 .upload-container-inner {
-    width: 30%;
     margin: 0 auto;
+}
+
+.n-card {
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 100px;
 }
 </style>

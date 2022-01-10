@@ -1,18 +1,25 @@
 <script lang="ts">
-import { defineAsyncComponent, defineComponent } from "vue";
+import { defineAsyncComponent, defineComponent, provide, ref } from "vue";
+import { NMessageProvider } from "naive-ui";
 
 // import Header from "./components/Header.vue";
 
 export default defineComponent({
   components: {
     Header: defineAsyncComponent(() => import("./components/Header.vue")),
+    NMessageProvider,
+  },
+  setup() {
+    provide("sharedToken", ref(""));
   }
 });
 </script>
 
 <template>
-  <Header />
-  <router-view></router-view>
+  <n-message-provider>
+    <Header />
+    <router-view></router-view>
+  </n-message-provider>
 </template>
 
 <style>
