@@ -36,13 +36,13 @@ export default defineComponent({
                 return str;
             }
         };
-        const fileUploadFinish = function () {
-            message.info("上传完成");
-        };
+        const acceptStr = "text/html,application/xhtml+xml,application/xml;" +
+            "q=0.9,image/avif,image/webp,image/apng,*/*;" +
+            "q=0.8,application/signed-exchange;v=b3;q=0.9";
         return {
             gotoAnalysisPage,
             getUserFileName,
-            fileUploadFinish,
+            acceptStr,
         };
     },
 });
@@ -58,7 +58,12 @@ export default defineComponent({
     <n-card title="账单分析">
         <div class="upload-container-outer">
             <div class="upload-container-inner">
-                <n-upload action="upload.php" :name="getUserFileName()" :default-upload="true">
+                <n-upload
+                    action="upload.php"
+                    :name="getUserFileName()"
+                    :default-upload="true"
+                    :accept="acceptStr"
+                >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
                             <n-icon size="48" :depth="3">
@@ -73,7 +78,12 @@ export default defineComponent({
         <n-divider />
         <div class="upload-container-outer">
             <div class="upload-container-inner">
-                <n-upload action="upload.php" :name="getUserFileName()" :default-upload="true">
+                <n-upload
+                    action="upload.php"
+                    :name="getUserFileName()"
+                    :default-upload="true"
+                    :accept="acceptStr"
+                >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
                             <n-icon size="48" :depth="3">
