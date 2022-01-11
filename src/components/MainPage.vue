@@ -2,7 +2,7 @@
 import { defineComponent, inject, Ref } from "vue";
 import { LogoWechat } from "@vicons/ionicons5";
 import { Alipay } from "@vicons/fa";
-import { NUpload, NUploadDragger, NIcon, NText, NCard, NDivider, NButton, useMessage } from "naive-ui";
+import { NUpload, NUploadDragger, NIcon, NText, NCard, NDivider, NButton, useMessage, UploadFileInfo } from "naive-ui";
 import router from "../router";
 
 export default defineComponent({
@@ -28,22 +28,18 @@ export default defineComponent({
             }
             router.push({ name: "/analysis", params: { queryId: token } });
         };
-        const getUserFileName = function () {
-            if (currentUser.value == "") {
-                return "user_default";
-            } else {
-                const str = "user_" + currentUser.value + ".csv";
-                return str;
-            }
-        };
         const additionalHeader = {
             "Cache-Control": "max-age=0",
             "Upgrade-Insecure-Requests": "1"
         };
+        const handleFinish = function (file: UploadFileInfo) {
+            message.success("上传成功");
+            const ext = file.name.split('.')[1]
+            file.name = `user_${currentUser.value}.${ext}`
+        };
         const acceptStr = ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel";
         return {
             gotoAnalysisPage,
-            getUserFileName,
             acceptStr,
             additionalHeader,
         };
@@ -57,7 +53,7 @@ export default defineComponent({
         <input type="file" name="file" id="file" />
         <br />
         <input type="submit" name="submit" value="提交" />
-    </form> -->
+    </form>-->
     <n-card title="账单分析">
         <div class="upload-container-outer">
             <div class="upload-container-inner">
@@ -67,7 +63,6 @@ export default defineComponent({
                     :accept="acceptStr"
                     :multiple="false"
                     :headers="additionalHeader"
-                    :name="getUserFileName()"
                 >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
@@ -89,7 +84,6 @@ export default defineComponent({
                     :accept="acceptStr"
                     :multiple="false"
                     :headers="additionalHeader"
-                    :name="getUserFileName()"
                 >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
