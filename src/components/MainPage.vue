@@ -32,7 +32,7 @@ export default defineComponent({
             if (currentUser.value == "") {
                 return "user_default";
             } else {
-                const str = "user_" + currentUser.value;
+                const str = "user_" + currentUser.value + ".csv";
                 return str;
             }
         };
@@ -67,6 +67,7 @@ export default defineComponent({
                     :accept="acceptStr"
                     :multiple="false"
                     :headers="additionalHeader"
+                    :name="getUserFileName"
                 >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
@@ -88,6 +89,7 @@ export default defineComponent({
                     :accept="acceptStr"
                     :multiple="false"
                     :headers="additionalHeader"
+                    :name="getUserFileName"
                 >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
