@@ -27,15 +27,15 @@ export default defineComponent({
             };
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
-                    console.log(xhr.response);
-                    if (xhr.status == 200 && xhr.response.result == true) {
-                        console.log(xhr.response);
-                        console.log(xhr.responseText);
+                    // console.log(xhr.response);
+                    if (xhr.status == 200) {
                         const json = JSON.parse(xhr.responseText);
                         console.log(json);
-                        message.success("登录成功");
-                        sharedToken.value = xhr.response.token;
-                        router.push({ name: "/" });
+                        if (json.result == true) {
+                            message.success("登录成功");
+                            sharedToken.value = json.token;
+                            router.push({ name: "/" });
+                        }
                     }
                 }
             };
