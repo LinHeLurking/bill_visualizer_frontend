@@ -2,7 +2,7 @@
 // import AnalysisPage from "./components/AnalysisPage.vue";
 // import LoginPage from "./components/LoginPage.vue";
 // import SignupPage from "./components/SignupPage.vue";
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
 
 const routes = [
     { path: "/", component: () => import("./components/MainPage.vue") },
@@ -13,7 +13,7 @@ const routes = [
 
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory("/site/"),
     routes: routes,
 });
 
