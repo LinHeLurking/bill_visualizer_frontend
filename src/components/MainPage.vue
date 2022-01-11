@@ -51,6 +51,13 @@ export default defineComponent({
             opt.file.name = `user_${currentUser.value}.${ext}`
             return true;
         }
+        const getUserUploadTarget = function () {
+            if (currentUser.value == "") {
+                return "upload.php";
+            } else {
+                return `${currentUser.value}/upload.php`;
+            }
+        }
         const acceptStr = ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel";
         return {
             gotoAnalysisPage,
@@ -58,6 +65,7 @@ export default defineComponent({
             additionalHeader,
             handleFinish,
             beforeUpload,
+            getUserUploadTarget,
         };
     },
 });
@@ -74,7 +82,7 @@ export default defineComponent({
         <div class="upload-container-outer">
             <div class="upload-container-inner">
                 <n-upload
-                    action="upload.php"
+                    :action="getUserUploadTarget()"
                     :default-upload="true"
                     :accept="acceptStr"
                     :multiple="false"
@@ -97,7 +105,7 @@ export default defineComponent({
         <div class="upload-container-outer">
             <div class="upload-container-inner">
                 <n-upload
-                    action="upload.php"
+                    :action="getUserUploadTarget()"
                     :default-upload="true"
                     :accept="acceptStr"
                     :multiple="false"
