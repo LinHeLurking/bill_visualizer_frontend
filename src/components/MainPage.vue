@@ -52,12 +52,12 @@ export default defineComponent({
 </script>
 
 <template>
-    <form action="upload.php" method="post" enctype="multipart/form-data">
+    <!-- <form action="upload.php" method="post" enctype="multipart/form-data">
         <label for="file">文件名：</label>
         <input type="file" name="file" id="file" />
         <br />
         <input type="submit" name="submit" value="提交" />
-    </form>
+    </form> -->
     <n-card title="账单分析">
         <div class="upload-container-outer">
             <div class="upload-container-inner">
