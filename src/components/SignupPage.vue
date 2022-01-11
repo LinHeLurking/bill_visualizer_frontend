@@ -31,6 +31,8 @@ export default defineComponent({
                 };
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
+                        console.log(xhr.response);
+                        console.log(xhr.responseText);
                         const json = JSON.parse(xhr.responseText);
                         console.log(json);
                         message.success("注册成功");
