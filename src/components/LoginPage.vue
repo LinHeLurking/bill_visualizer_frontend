@@ -28,6 +28,10 @@ export default defineComponent({
                 if (xhr.readyState === 4) {
                     console.log(xhr.response);
                     if (xhr.status == 200 && xhr.response.result == true) {
+                        console.log(xhr.response);
+                        console.log(xhr.responseText);
+                        const json = JSON.parse(xhr.responseText);
+                        console.log(json);
                         message.success("登录成功");
                         sharedToken.value = xhr.response.token;
                     }
