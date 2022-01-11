@@ -15,6 +15,7 @@ export default defineComponent({
         const userNameRef = ref("");
         const passwordRef = ref("");
         const sharedToken = inject("sharedToken") as Ref<string>;
+        const currentUser = inject("currentUser") as Ref<string>;
         const message = useMessage();
         const logIn = function () {
             const userName = userNameRef.value;
@@ -34,6 +35,7 @@ export default defineComponent({
                         if (json.result == true) {
                             message.success("登录成功");
                             sharedToken.value = json.token;
+                            currentUser.value = userName;
                             router.push("/");
                         }
                     }

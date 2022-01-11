@@ -11,6 +11,7 @@ export default defineComponent({
   },
   setup() {
     provide("sharedToken", ref(""));
+    provide("currentUser", ref(""));
   }
 });
 </script>

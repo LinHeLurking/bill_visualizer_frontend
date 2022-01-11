@@ -19,6 +19,7 @@ export default defineComponent({
     },
     setup() {
         const sharedToken = inject("sharedToken") as Ref<string>;
+        const currentUser = inject("currentUser") as Ref<string>;
         const message = useMessage();
         const gotoAnalysisPage = function () {
             const token = sharedToken.value;
@@ -28,10 +29,10 @@ export default defineComponent({
             router.push({ name: "/analysis", params: { queryId: token } });
         };
         const getUserDataPath = function () {
-            if (sharedToken.value == "") {
+            if (currentUser.value == "") {
                 return "";
             } else {
-                var str = "/data/" + sharedToken.value;
+                var str = "/data/" + currentUser.value;
                 if (!str.endsWith("/")) {
                     str += "/";
                 }
