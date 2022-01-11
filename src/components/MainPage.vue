@@ -10,7 +10,7 @@ interface FinishPara {
     event: Event
 };
 
-interface BeforePara {
+interface FileChangePara {
     file: UploadFileInfo,
     fileList: Array<UploadFileInfo>,
 };
@@ -46,13 +46,9 @@ export default defineComponent({
             message.success("上传成功");
             return opt.file;
         };
-        const beforeUpload = function (opt: BeforePara) {
+        const onFileChange = function (opt: FileChangePara) {
             const ext = opt.file.name.split('.')[1]
             opt.file.name = `user_${currentUser.value}.${ext}`
-            let promise = new Promise<boolean>(function (resolve, reject) {
-                return true;
-            });
-            return promise;
         };
         const acceptStr = ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel";
         return {
@@ -60,7 +56,7 @@ export default defineComponent({
             acceptStr,
             additionalHeader,
             handleFinish,
-            beforeUpload,
+            onFileChange,
         };
     },
 });
@@ -83,7 +79,7 @@ export default defineComponent({
                     :multiple="false"
                     :headers="additionalHeader"
                     @finish="handleFinish"
-                    @before-upload="beforeUpload"
+                    @change="onFileChange"
                 >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
@@ -106,7 +102,7 @@ export default defineComponent({
                     :multiple="false"
                     :headers="additionalHeader"
                     @finish="handleFinish"
-                    @before-upload="beforeUpload"
+                    @change="onFileChange"
                 >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
