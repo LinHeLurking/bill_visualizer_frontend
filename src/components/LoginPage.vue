@@ -34,7 +34,7 @@ export default defineComponent({
                         if (json.result == true) {
                             message.success("登录成功");
                             sharedToken.value = json.token;
-                            router.push({ name: "/" });
+                            router.push("/");
                         }
                     }
                 }
