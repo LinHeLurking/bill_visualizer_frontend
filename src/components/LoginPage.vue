@@ -37,6 +37,8 @@ export default defineComponent({
                             sharedToken.value = json.token;
                             currentUser.value = userName;
                             router.push("/");
+                        } else {
+                            message.error("登陆失败，可能是密码或用户名错误");
                         }
                     }
                 }
