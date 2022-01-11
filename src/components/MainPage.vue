@@ -36,11 +36,16 @@ export default defineComponent({
                 return str;
             }
         };
+        const additionalHeader = {
+            "Cache-Control": "max-age=0",
+            "Upgrade-Insecure-Requests": "1"
+        };
         const acceptStr = ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel";
         return {
             gotoAnalysisPage,
             getUserFileName,
             acceptStr,
+            additionalHeader,
         };
     },
 });
@@ -58,10 +63,10 @@ export default defineComponent({
             <div class="upload-container-inner">
                 <n-upload
                     action="upload.php"
-                    :name="getUserFileName()"
                     :default-upload="true"
                     :accept="acceptStr"
                     :multiple="false"
+                    :headers="additionalHeader"
                 >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
@@ -79,10 +84,10 @@ export default defineComponent({
             <div class="upload-container-inner">
                 <n-upload
                     action="upload.php"
-                    :name="getUserFileName()"
                     :default-upload="true"
                     :accept="acceptStr"
                     :multiple="false"
+                    :headers="additionalHeader"
                 >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
