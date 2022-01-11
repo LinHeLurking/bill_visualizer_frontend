@@ -60,7 +60,7 @@ export default defineComponent({
     <n-card title="账单分析">
         <div class="upload-container-outer">
             <div class="upload-container-inner">
-                <n-upload :action="getUserDataPath()" :name="getUserFileName()">
+                <n-upload action="upload.php" :name="getUserFileName()">
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
                             <n-icon size="48" :depth="3">
@@ -75,7 +75,7 @@ export default defineComponent({
         <n-divider />
         <div class="upload-container-outer">
             <div class="upload-container-inner">
-                <n-upload :action="getUserDataPath()" :name="getUserFileName()">
+                <n-upload action="upload.php" :name="getUserFileName()">
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
                             <n-icon size="48" :depth="3">
