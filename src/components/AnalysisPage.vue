@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, Ref, inject } from "vue";
 import { useRoute } from "vue-router";
 import { NDataTable, NSelect, SelectOption } from "naive-ui";
 import LineChart from "./LineChart.vue";
@@ -7,7 +7,7 @@ import BarChart from "./BarChart.vue";
 
 interface MonthlyCost {
     key: number,
-    month: number,
+    month: string,
     money: number,
 };
 
@@ -24,55 +24,40 @@ export default defineComponent({
         LineChart,
         BarChart,
     },
-    data() {
-        const route = useRoute()
-        var queryId = "";
-        var showDefault = true;
-        var queryName = "???"
+    setup() {
+        const sharedToken = inject("sharedToken") as Ref<string>;
+        const currentUser = inject("currentUser") as Ref<string>;
 
-
-
-        if (route.params.queryId) {
-            // TODO: check api valid
-            queryId = route.params.queryId as string;
-            showDefault = false;
-        }
-
-        const dataTableInstRef = ref(null);
-
-        const columns = [
-            {
-                title: "Month",
-                key: "month",
-                sorter: {
-                    compare: (a: MonthlyCost, b: MonthlyCost) => a.month - b.month,
-                    multiple: 2,
-                }
-            },
-            {
-                title: "Money",
-                key: "money",
-                sorter: {
-                    compare: (a: MonthlyCost, b: MonthlyCost) => a.money - b.money,
-                    multiple: 1,
-                }
-            },
-        ];
-
-        const monthNames = ((): number[] => {
-            var names: number[] = new Array();
-            if (!showDefault) {
-                // TODO: add API call here
-            } else {
-                for (let m = 1; m <= 12; ++m) {
-                    names.push(m);
-                }
+        const monthNames = ((): string[] => {
+            var names: string[] = new Array();
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `/api/monthOutcome?uuid=${currentUser.value}&token=${sharedToken.value}`, false); // false for synchronous request
+            xhr.send(null);
+            console.log(xhr.responseText);
+            const json = JSON.parse(xhr.responseText);
+            for (let i = 0; i < json.length; ++i) {
+                names.push(String(json.month));
             }
             return names;
         })();
 
-        const costAmountSelectedMonth = ref(monthNames[0]);
-        const costRepeatSelectedMonth = ref(monthNames[0]);
+        const costCategories = (function () {
+            const cost = new Array<CostCategory>();
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `/api/sort?uuid=${currentUser.value}&token=${sharedToken.value}`, false); // false for synchronous request
+            xhr.send(null);
+            console.log(xhr.responseText);
+            const json = JSON.parse(xhr.responseText);
+            for (let i = 0; i < json.length; ++i) {
+                cost.push({
+                    category: String(json.category),
+                    amount: Number(json.amount),
+                    repeat: Number(json.repeat)
+                });
+            }
+            cost.sort((a, b) => b.amount - a.amount);
+            return cost;
+        })();
 
         const monthSelectorOptions = ((): SelectOption[] => {
             const options = new Array<SelectOption>();
@@ -87,15 +72,56 @@ export default defineComponent({
             return options;
         })();
 
+        const costAmountSelectedMonth = ref(monthNames[0]);
+        const costRepeatSelectedMonth = ref(monthNames[0]);
+        return {
+            costAmountSelectedMonth,
+            costRepeatSelectedMonth,
+            monthSelectorOptions,
+            sharedToken: sharedToken.value,
+            currentUser: currentUser.value,
+            costCategories,
+        };
+    },
+    data() {
+        const route = useRoute()
+        var queryId = "";
+        var showDefault = true;
+        const queryName = this.currentUser;
+
+        if (route.params.queryId) {
+            queryId = route.params.queryId as string;
+            showDefault = false;
+        }
+
+        const dataTableInstRef = ref(null);
+
+        const columns = [
+            {
+                title: "Month",
+                key: "month",
+                sorter: {
+                    compare: (a: MonthlyCost, b: MonthlyCost) => a.month < b.month ? -1 : (a > b ? 1 : 0),
+                    multiple: 2,
+                }
+            },
+            {
+                title: "Money",
+                key: "money",
+                sorter: {
+                    compare: (a: MonthlyCost, b: MonthlyCost) => a.money - b.money,
+                    multiple: 1,
+                }
+            },
+        ];
+
+
         return {
             queryId: queryId,
             showDefault: showDefault,
             queryName: queryName,
             costTableColumns: columns,
             dataTableInstRef: dataTableInstRef,
-            costAmountSelectedMonth: costAmountSelectedMonth,
-            costRepeatSelectedMonth: costRepeatSelectedMonth,
-            monthSelectorOptions: monthSelectorOptions,
         };
     },
     computed: {
@@ -108,49 +134,18 @@ export default defineComponent({
         },
         monthlyCost(): MonthlyCost[] {
             var cost: MonthlyCost[] = new Array();
-            if (!this.showDefault) {
-                // TODO: add API call here
-            } else {
-                var keyId = 0;
-                for (let mo = 1; mo <= 12; mo++) {
-                    cost.push({
-                        key: keyId++,
-                        month: mo,
-                        money: Math.round(Math.random() * 2000)
-                    });
-                }
-            }
-            return cost;
-        },
-        costAmountCategories(): CostCategory[] {
-            const cost = new Array<CostCategory>();
-            if (!this.showDefault) {
-                // TODO: add API call here
-            } else {
-                for (let t = 1; t < 8; ++t) {
-                    cost.push({
-                        category: "category " + String(t),
-                        amount: Math.round(Math.random() * 1000) + this.costAmountSelectedMonth,
-                        repeat: Math.round(Math.random() * 6),
-                    });
-                }
-            }
-            cost.sort((a, b) => b.amount - a.amount);
-            return cost;
-        },
-        costRepeatCategories(): CostCategory[] {
-            const cost = new Array<CostCategory>();
-            if (!this.showDefault) {
-                // TODO: add API call here
-            } else {
-                for (let t = 1; t < 8; ++t) {
-                    cost.push({
-                        category: "category " + String(t),
-                        amount: Math.round(Math.random() * 1000),
-                        repeat: Math.round(Math.random() * 6) + this.costRepeatSelectedMonth / 3,
-                    });
-                }
-                cost.sort((a, b) => b.repeat - a.repeat);
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `/api/monthOutcome?uuid=${this.currentUser}&token=${this.sharedToken}`, false); // false for synchronous request
+            xhr.send(null);
+            console.log(xhr.responseText);
+            const json = JSON.parse(xhr.responseText);
+            var keyId = 0;
+            for (let i = 0; i < json.len; ++i) {
+                cost.push({
+                    key: keyId++,
+                    month: String(json.month),
+                    money: Number(json.money)
+                });
             }
             return cost;
         },
@@ -165,6 +160,7 @@ export default defineComponent({
         <h3>账单：{{ billTitle }}</h3>
         <div class="monthly-cost-container">
             <div class="monthly-cost-table-container">
+                <div>每月支出</div>
                 <div class="monthly-cost-table-wrapper">
                     <n-data-table
                         :columns="costTableColumns"
@@ -177,6 +173,7 @@ export default defineComponent({
             </div>
             <div class="monthly-cost-line-chart-container">
                 <div class="monthly-cost-line-chart-wrapper">
+                    <div>支出趋势</div>
                     <line-chart
                         :xyValuePairs="monthlyCost"
                         xKeyName="month"
@@ -192,17 +189,18 @@ export default defineComponent({
         <div class="monthly-cost-container">
             <div class="monthly-cost-amount-chart-container">
                 <div class="monthly-cost-amount-chart-wrapper">
-                    <div class="month-selector">
+                    <div>总量最多的消费</div>
+                    <!-- <div class="month-selector">
                         <div class="month-selector">
                             <n-select
                                 v-model:value="costAmountSelectedMonth"
                                 :options="monthSelectorOptions"
                             />
                         </div>
-                    </div>
+                    </div>-->
                     <div class="monthly-cost-amount-chart">
                         <bar-chart
-                            :xy-value-pairs="costAmountCategories"
+                            :xy-value-pairs="costCategories"
                             xKeyName="category"
                             yKeyName="amount"
                             title="What costs most"
@@ -214,15 +212,16 @@ export default defineComponent({
             </div>
             <div class="monthly-cost-repeat-chart-container">
                 <div class="monthly-cost-repeat-chart-wrapper">
-                    <div class="month-selector">
+                    <div>次数最多的消费</div>
+                    <!-- <div class="month-selector">
                         <n-select
                             v-model:value="costRepeatSelectedMonth"
                             :options="monthSelectorOptions"
                         />
-                    </div>
+                    </div>-->
                     <div class="monthly-cost-repeat-chart">
                         <bar-chart
-                            :xy-value-pairs="costRepeatCategories"
+                            :xy-value-pairs="costCategories"
                             xKeyName="category"
                             yKeyName="repeat"
                             title="How frequent it costs"
