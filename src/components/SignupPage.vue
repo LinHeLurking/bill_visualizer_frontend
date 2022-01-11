@@ -30,11 +30,10 @@ export default defineComponent({
                     }
                 };
                 xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4) {
-                        console.log(xhr.response);
-                        if (xhr.status == 200) {
-                            message.success("注册成功");
-                        }
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        const json = JSON.parse(xhr.responseText);
+                        console.log(json);
+                        message.success("注册成功");
                     }
                 };
                 xhr.open("POST", "/register", true);
