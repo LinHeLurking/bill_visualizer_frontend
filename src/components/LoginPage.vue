@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, ref, inject, Ref } from "vue";
 import { NCard, NSpace, NInput, NDivider, NButton, useMessage } from "naive-ui";
+import router from "../router";
 
 export default defineComponent({
     components: {
@@ -34,6 +35,7 @@ export default defineComponent({
                         console.log(json);
                         message.success("登录成功");
                         sharedToken.value = xhr.response.token;
+                        router.push({ name: "/" });
                     }
                 }
             };
