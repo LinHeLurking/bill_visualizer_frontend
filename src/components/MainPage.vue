@@ -5,6 +5,11 @@ import { Alipay } from "@vicons/fa";
 import { NUpload, NUploadDragger, NIcon, NText, NCard, NDivider, NButton, useMessage, UploadFileInfo } from "naive-ui";
 import router from "../router";
 
+interface FinishPara {
+    file: UploadFileInfo,
+    event: Event
+};
+
 export default defineComponent({
     components: {
         Alipay,
@@ -32,16 +37,18 @@ export default defineComponent({
             "Cache-Control": "max-age=0",
             "Upgrade-Insecure-Requests": "1"
         };
-        const handleFinish = function (file: UploadFileInfo) {
+        const handleFinish = function (opt: FinishPara) {
             message.success("上传成功");
-            const ext = file.name.split('.')[1]
-            file.name = `user_${currentUser.value}.${ext}`
+            const ext = opt.file.name.split('.')[1]
+            opt.file.name = `user_${currentUser.value}.${ext}`
+            return opt.file;
         };
         const acceptStr = ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel";
         return {
             gotoAnalysisPage,
             acceptStr,
             additionalHeader,
+            handleFinish,
         };
     },
 });
@@ -63,6 +70,7 @@ export default defineComponent({
                     :accept="acceptStr"
                     :multiple="false"
                     :headers="additionalHeader"
+                    @finish="handleFinish"
                 >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
@@ -84,6 +92,7 @@ export default defineComponent({
                     :accept="acceptStr"
                     :multiple="false"
                     :headers="additionalHeader"
+                    @finish="handleFinish"
                 >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
