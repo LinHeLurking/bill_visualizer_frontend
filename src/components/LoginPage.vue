@@ -33,7 +33,7 @@ export default defineComponent({
                     }
                 }
             };
-            xhr.open("POST", "/login", true);
+            xhr.open("POST", "/api/login", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({
                 uuid: userName,

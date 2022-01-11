@@ -38,7 +38,7 @@ export default defineComponent({
                         message.success("注册成功");
                     }
                 };
-                xhr.open("POST", "/register", true);
+                xhr.open("POST", "/api/register", true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.send(JSON.stringify({
                     uuid: userName,
