@@ -33,6 +33,7 @@ export default defineComponent({
 
 
         if (route.params.queryId) {
+            // TODO: check api valid
             queryId = route.params.queryId as string;
             showDefault = false;
         }
