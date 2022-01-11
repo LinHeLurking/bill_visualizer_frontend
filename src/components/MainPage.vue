@@ -67,7 +67,7 @@ export default defineComponent({
                     :accept="acceptStr"
                     :multiple="false"
                     :headers="additionalHeader"
-                    :name="getUserFileName"
+                    :name="getUserFileName()"
                 >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
@@ -89,7 +89,7 @@ export default defineComponent({
                     :accept="acceptStr"
                     :multiple="false"
                     :headers="additionalHeader"
-                    :name="getUserFileName"
+                    :name="getUserFileName()"
                 >
                     <n-upload-dragger>
                         <div style="margin-bottom: 12px;">
