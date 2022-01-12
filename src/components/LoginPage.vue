@@ -29,16 +29,16 @@ export default defineComponent({
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     // console.log(xhr.response);
-                    if (xhr.status == 200) {
+                    if (xhr.status === 200) {
                         const json = JSON.parse(xhr.responseText);
                         console.log(json);
-                        if (json.result == true) {
+                        if (json.result === true) {
                             message.success("登录成功");
                             sharedToken.value = json.token;
                             currentUser.value = userName;
                             router.push("/");
                         } else {
-                            message.error("登陆失败，可能是密码或用户名错误");
+                            message.error("登陆失败：" + json.reason);
                         }
                     }
                 }

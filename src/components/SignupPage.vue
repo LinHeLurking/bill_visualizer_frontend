@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { NCard, NSpace, NInput, NDivider, NButton, useMessage } from "naive-ui";
+import router from "../router";
 
 export default defineComponent({
     components: {
@@ -37,6 +38,7 @@ export default defineComponent({
                         console.log(json);
                         if (json.result === true) {
                             message.success("注册成功");
+                            router.push("/");
                         } else {
                             message.error("注册失败：" + json.reason);
                         }
