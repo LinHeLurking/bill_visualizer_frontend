@@ -35,7 +35,11 @@ export default defineComponent({
                         console.log(xhr.responseText);
                         const json = JSON.parse(xhr.responseText);
                         console.log(json);
-                        message.success("注册成功");
+                        if (json.result === true) {
+                            message.success("注册成功");
+                        } else {
+                            message.error("注册失败：" + json.reason);
+                        }
                     }
                 };
                 xhr.open("POST", "/api/register", true);
