@@ -36,7 +36,11 @@ export default defineComponent({
             if (token == "") {
                 message.warning("请注册后使用分析功能");
             }
-            router.push({ name: "/analysis", params: { queryId: token } });
+            try {
+                router.push({ path: "/analysis", params: { queryId: token } });
+            } catch (error) {
+                console.log("Jump failed: " + String(error));
+            }
         };
         const additionalHeader = {
             "Cache-Control": "max-age=0",
