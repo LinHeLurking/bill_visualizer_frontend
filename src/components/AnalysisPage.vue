@@ -154,15 +154,17 @@ export default defineComponent({
         <h3>账单：{{ billTitle }}</h3>
         <div class="monthly-cost-container">
             <div class="monthly-cost-table-container">
-                <div>每月支出</div>
-                <div class="monthly-cost-table-wrapper">
-                    <n-data-table
-                        :columns="costTableColumns"
-                        :data="monthlyCost"
-                        :single-line="false"
-                        :max-height="300"
-                        ref="dataTableInstRef"
-                    />
+                <div>
+                    <div>每月支出</div>
+                    <div class="monthly-cost-table-wrapper">
+                        <n-data-table
+                            :columns="costTableColumns"
+                            :data="monthlyCost"
+                            :single-line="false"
+                            :max-height="300"
+                            ref="dataTableInstRef"
+                        />
+                    </div>
                 </div>
             </div>
             <div class="monthly-cost-line-chart-container">
