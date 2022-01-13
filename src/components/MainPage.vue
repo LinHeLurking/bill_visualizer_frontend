@@ -55,7 +55,7 @@ export default defineComponent({
             if (currentUser.value == "") {
                 return "upload.php";
             } else {
-                return `${currentUser.value}/${target}/upload.php`;
+                return `/data/${currentUser.value}/${target}/upload.php`;
             }
         }
         const acceptStr = ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel";

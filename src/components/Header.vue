@@ -95,7 +95,7 @@ export default defineComponent({
 }
 
 .header-item {
-    margin: auto;
+    margin: 8px;
     margin-bottom: 0;
 }
 
