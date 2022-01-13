@@ -40,6 +40,8 @@ export default defineComponent({
                         } else {
                             message.error("登陆失败：" + json.reason);
                         }
+                    } else {
+                        message.error("登陆失败： error code " + xhr.status);
                     }
                 }
             };
