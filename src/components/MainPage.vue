@@ -37,7 +37,7 @@ export default defineComponent({
                 message.warning("请注册后使用分析功能");
             }
             try {
-                router.push({ path: "/analysis", params: { queryId: token } });
+                router.push("/analysis");
             } catch (error) {
                 console.log("Jump failed: " + String(error));
             }

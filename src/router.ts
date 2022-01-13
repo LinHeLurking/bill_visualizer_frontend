@@ -6,7 +6,7 @@ import { createRouter, createWebHashHistory, createWebHistory } from "vue-router
 
 const routes = [
     { path: "/", component: () => import("./components/MainPage.vue") },
-    { path: "/analysis/:queryId?", component: () => import("./components/AnalysisPage.vue") },
+    { path: "/analysis", component: () => import("./components/AnalysisPage.vue") },
     { path: "/login", component: () => import("./components/LoginPage.vue") },
     { path: "/signup", component: () => import("./components/SignupPage.vue") },
 ];

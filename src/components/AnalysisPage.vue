@@ -72,15 +72,35 @@ export default defineComponent({
             return options;
         })();
 
+        const monthlyCost = function (): MonthlyCost[] {
+            var cost: MonthlyCost[] = new Array();
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `/api/monthOutcome?uuid=${currentUser.value}&token=${sharedToken.value}`, false); // false for synchronous request
+            xhr.send(null);
+            console.log(xhr.responseText);
+            const json = JSON.parse(xhr.responseText);
+            var keyId = 0;
+            for (let i = 0; i < json.len; ++i) {
+                cost.push({
+                    key: keyId++,
+                    month: String(json.month),
+                    money: Number(json.money)
+                });
+            }
+            return cost;
+        };
+
+        const billTitle = currentUser.value + "的账单分析";
+
         const costAmountSelectedMonth = ref(monthNames[0]);
         const costRepeatSelectedMonth = ref(monthNames[0]);
         return {
             costAmountSelectedMonth,
             costRepeatSelectedMonth,
             monthSelectorOptions,
-            sharedToken: sharedToken.value,
-            currentUser: currentUser.value,
+            monthlyCost,
             costCategories,
+            billTitle,
         };
     },
     data() {
@@ -117,39 +137,13 @@ export default defineComponent({
 
 
         return {
-            queryId: queryId,
-            showDefault: showDefault,
-            queryName: queryName,
+            queryId,
+            showDefault,
+            queryName,
             costTableColumns: columns,
-            dataTableInstRef: dataTableInstRef,
+            dataTableInstRef,
         };
     },
-    computed: {
-        billTitle(): string {
-            if (this.showDefault) {
-                return "展示默认效果";
-            } else {
-                return this.queryName.valueOf() + "的账单分析";
-            }
-        },
-        monthlyCost(): MonthlyCost[] {
-            var cost: MonthlyCost[] = new Array();
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", `/api/monthOutcome?uuid=${this.currentUser}&token=${this.sharedToken}`, false); // false for synchronous request
-            xhr.send(null);
-            console.log(xhr.responseText);
-            const json = JSON.parse(xhr.responseText);
-            var keyId = 0;
-            for (let i = 0; i < json.len; ++i) {
-                cost.push({
-                    key: keyId++,
-                    month: String(json.month),
-                    money: Number(json.money)
-                });
-            }
-            return cost;
-        },
-    }
 })
 </script>
 
