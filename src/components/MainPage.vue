@@ -126,6 +126,7 @@ export default defineComponent({
         </div>
         <div style="height: 20px;"></div>
         <n-button type="primary" @click="gotoAnalysisPage">分析账单</n-button>
+        <div style="margin-top: 10px; font-size:12px;">登陆后可以直接查看上次的分析结果</div>
     </n-card>
 </template>
 

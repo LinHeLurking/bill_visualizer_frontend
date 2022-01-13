@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, inject, Ref } from "vue";
 import { Icon } from "@vicons/utils";
 import { Home } from "@vicons/ionicons5";
 import LogInSharp from "@vicons/material/LogInSharp";
@@ -11,6 +11,20 @@ export default defineComponent({
         Home,
         LogInSharp,
         Signature20Regular,
+    },
+    setup() {
+        const sharedToken = inject("sharedToken") as Ref<string>;
+        const currentUser = inject("currentUser") as Ref<string>;
+        const getUserDisplayStr = function () {
+            if (currentUser.value == "") {
+                return "";
+            } else {
+                return `Welcome! ${currentUser.value}`;
+            }
+        };
+        return {
+            getUserDisplayStr,
+        };
     }
 })
 </script>
@@ -20,6 +34,7 @@ export default defineComponent({
     <div class="header-container">
         <div style="height:10px;"></div>
         <div class="raw-header">
+            <div class="header-item">{{ getUserDisplayStr() }}</div>
             <div class="header-item">
                 <router-link to="/">
                     <Icon size="20">
