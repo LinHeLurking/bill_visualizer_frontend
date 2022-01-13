@@ -51,11 +51,11 @@ export default defineComponent({
             opt.file.name = `user_${currentUser.value}.${ext}`
             return true;
         }
-        const getUserUploadTarget = function () {
+        const getUserUploadTarget = function (target: string) {
             if (currentUser.value == "") {
                 return "upload.php";
             } else {
-                return `${currentUser.value}/upload.php`;
+                return `${currentUser.value}/${target}/upload.php`;
             }
         }
         const acceptStr = ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel";
@@ -82,7 +82,7 @@ export default defineComponent({
         <div class="upload-container-outer">
             <div class="upload-container-inner">
                 <n-upload
-                    :action="getUserUploadTarget()"
+                    :action="getUserUploadTarget('alipay')"
                     :default-upload="true"
                     :accept="acceptStr"
                     :multiple="false"
@@ -105,7 +105,7 @@ export default defineComponent({
         <div class="upload-container-outer">
             <div class="upload-container-inner">
                 <n-upload
-                    :action="getUserUploadTarget()"
+                    :action="getUserUploadTarget('wechat')"
                     :default-upload="true"
                     :accept="acceptStr"
                     :multiple="false"
